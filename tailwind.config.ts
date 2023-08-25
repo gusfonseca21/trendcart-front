@@ -21,6 +21,15 @@ const config: Config = {
         "128": "32rem",
         "144": "40rem",
       },
+      animation: {
+        "fade-in-out": "fade 500ms linear",
+      },
+      keyframes: {
+        fade: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
+        },
+      },
     },
   },
   plugins: [],
