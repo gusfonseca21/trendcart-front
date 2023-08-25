@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   content: [
@@ -32,6 +33,29 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".center": {
+          display: "flex",
+          "flex-direction": "column",
+          "justify-content": "center",
+          "align-items": "center",
+        },
+        ".transition-black-opacity": {
+          "transition-property": "opacity",
+          "transition-duration": "300ms",
+          "transition-timing-function": "ease-in-out",
+          "&:hover": {
+            opacity: "0.6",
+          },
+        },
+        ".input": {
+          border: "1px solid #ccc",
+          padding: "0.75rem 0.5rem 0.75rem 0.5rem",
+        },
+      });
+    }),
+  ],
 };
 export default config;
