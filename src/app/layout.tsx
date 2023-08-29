@@ -31,7 +31,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <SignInModal openSignIn={openSignIn} setOpenSignIn={setOpenSignIn} />
         <Navbar setOpenSignIn={setOpenSignIn} />
-        <main className='min-h-screen'>{children}</main>
+        <main className='min-h-screen min-w-full top-0 relative'>
+          {children}
+        </main>
       </body>
     </html>
   );

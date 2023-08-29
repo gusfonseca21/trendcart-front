@@ -24,11 +24,17 @@ const config: Config = {
       },
       animation: {
         "fade-in-out": "fade 500ms linear",
+        "button-click": "press 200ms linear",
       },
       keyframes: {
         fade: {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0" },
+        },
+        press: {
+          "0%": { scale: "1" },
+          "50%": { scale: "0.99" },
+          "100%": { scale: "1" },
         },
       },
     },

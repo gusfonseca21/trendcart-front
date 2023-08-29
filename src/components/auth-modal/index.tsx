@@ -14,7 +14,8 @@ interface Props {
 
 export type AuthMode = "signIn" | "register";
 
-const animationStyle = "animate-fade-in-out";
+const changeAuthAnimation = "animate-fade-in-out";
+const clickBtnAnimation = "animate-button-click";
 
 export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   const [authMode, setAuthMode] = useState<AuthMode>("signIn");
@@ -22,6 +23,7 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [contentTransition, setContentTransition] = useState("");
+  const [reqBtnAnimation, setReqBtnAnimation] = useState("");
   const [loading, setLoading] = useState(false);
 
   const authModeBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -51,7 +53,7 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
     if (btn) {
       btn.disabled = true;
     }
-    setContentTransition(animationStyle);
+    setContentTransition(changeAuthAnimation);
     setTimeout(() => {
       setAuthMode((prevState) =>
         prevState === "signIn" ? "register" : "signIn"
@@ -69,6 +71,7 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   async function sendRequestHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     e.currentTarget.disabled = true;
+    setReqBtnAnimation(clickBtnAnimation);
     if (loading) return;
     console.log("first");
     setLoading(true);
@@ -128,7 +131,8 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
             <button
               disabled={loading}
               type='submit'
-              className='input bg-black text-white transition-black-opacity'
+              className={`input bg-black text-white transition-black-opacity ${reqBtnAnimation}`}
+              onAnimationEnd={() => setReqBtnAnimation("")}
             >
               {!loading && (authMode === "signIn" ? "Entrar" : "Registrar")}
               {loading && <LoadingSpinner />}
@@ -137,7 +141,7 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
             <button
               onClick={changeAuthMode}
               type='button'
-              className='input bg-white text-black hover:border-black'
+              className='input bg-white text-black hover:border-black active:animate-button-click'
               ref={authModeBtnRef}
             >
               {authMode === "signIn" ? "Criar uma conta" : "Entrar"}

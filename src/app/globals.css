@@ -2,9 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-} */
+:root {
+  --secondary-color: #dc9814;
+}
 
 body {
   background-color: #fff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+a {
+  cursor: pointer;
 }
