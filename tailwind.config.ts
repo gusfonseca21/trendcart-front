@@ -37,6 +37,9 @@ const config: Config = {
           "100%": { scale: "1" },
         },
       },
+      colors: {
+        main: "#dc9814",
+      },
     },
   },
   plugins: [

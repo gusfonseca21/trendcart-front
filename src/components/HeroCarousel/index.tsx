@@ -18,6 +18,7 @@ export default function HeroCarousel() {
   const [loaded, setLoaded] = useState(false);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
+    rubberband: false,
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
     },
@@ -25,8 +26,6 @@ export default function HeroCarousel() {
       setLoaded(true);
     },
   });
-
-  console.log(instanceRef);
 
   useEffect(() => {
     (async function () {
@@ -44,33 +43,17 @@ export default function HeroCarousel() {
   return (
     <>
       <div className='navigation-wrapper'>
-        {heroProducts.length && (
+        {!!heroProducts.length && (
           <div ref={sliderRef} className='keen-slider'>
-            <div className='keen-slider__slide number-slide1'>
-              <Image
-                src={`/products/${heroProducts[0].bannerImage}.jpg`}
-                className='object-cover'
-                fill
-                alt={heroProducts[0].bannerImage}
-              />
-            </div>
-            <div className='keen-slider__slide number-slide2'>
-              <Image
-                src={`/products/${heroProducts[1].bannerImage}.jpg`}
-                className='object-cover'
-                fill
-                alt={heroProducts[1].bannerImage}
-              />
-            </div>
-            <div className='keen-slider__slide number-slide3'>
-              {" "}
-              <Image
-                src={`/products/${heroProducts[2].bannerImage}.jpg`}
-                className='object-cover'
-                fill
-                alt={heroProducts[2].bannerImage}
-              />
-            </div>
+            {heroProducts.map((product, index) => {
+              return (
+                <CasrouselImage
+                  key={product._id}
+                  imagePath={product.bannerImage}
+                  isActive={index === instanceRef.current?.track.details.rel}
+                />
+              );
+            })}
           </div>
         )}
         {loaded && instanceRef.current && (
@@ -82,7 +65,6 @@ export default function HeroCarousel() {
               }
               disabled={currentSlide === 0}
             />
-
             <Arrow
               onClick={(e: any) =>
                 e.stopPropagation() || instanceRef.current?.next()
@@ -140,5 +122,61 @@ function Arrow(props: {
         <path d='M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z' />
       )}
     </svg>
+  );
+}
+
+interface CarouselImageProps {
+  imagePath: string;
+  isActive: boolean;
+}
+
+function CasrouselImage({ imagePath, isActive }: CarouselImageProps) {
+  const [showContent, setShowContent] = useState(isActive);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (isActive) {
+        setShowContent(true);
+      }
+    }, 300);
+
+    if (!isActive) {
+      setShowContent(false);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isActive]);
+
+  return (
+    <div className='keen-slider__slide number-slide relative'>
+      <div
+        className={`absolute z-10 top:50 left-64 max-w-sm flex flex-col gap-4 duration-1000 ${
+          showContent ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <h2
+          className={`text-3xl font-normal m-0 ${
+            imagePath === "slider-pendant-lighting"
+              ? "text-white"
+              : "text-black"
+          }`}
+        >
+          Contemporary Pendant Lighting
+        </h2>
+        <span className='text-xl font-normal text-[#888] pb-2 border-b border-[#888] w-fit cursor-pointer hover:text-main  ease-in-out duration-200'>
+          Interior
+        </span>
+      </div>
+      <Image
+        src={`/products/${imagePath}.jpg`}
+        className='object-cover'
+        fill
+        alt={imagePath}
+        priority
+        unoptimized
+      />
+    </div>
   );
 }
