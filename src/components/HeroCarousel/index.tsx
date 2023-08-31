@@ -9,13 +9,17 @@ type HeroProduct = {
   _id: string;
   name: string;
   category: string;
-  bannerImage: string;
+  hero: {
+    image: string;
+    title: string;
+  };
 };
 
 export default function HeroCarousel() {
   const [heroProducts, setHeroProducts] = useState<HeroProduct[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     rubberband: false,
@@ -27,6 +31,29 @@ export default function HeroCarousel() {
     },
   });
 
+  // Mudança de direção para o carrosel
+  useEffect(() => {
+    if (currentSlide === 1) {
+      setDirection((prevState) => (prevState === "next" ? "prev" : "next"));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSlide]);
+
+  // carrosel automático
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (direction === "next") {
+        instanceRef.current?.next();
+      }
+      if (direction === "prev") {
+        instanceRef.current?.prev();
+      }
+    }, 6000);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSlide]);
+
+  // fetch de Produtos do hero
   useEffect(() => {
     (async function () {
       try {
@@ -49,7 +76,9 @@ export default function HeroCarousel() {
               return (
                 <CasrouselImage
                   key={product._id}
-                  imagePath={product.bannerImage}
+                  title={product.hero.title}
+                  imagePath={product.hero.image}
+                  category={product.category}
                   isActive={index === instanceRef.current?.track.details.rel}
                 />
               );
@@ -128,9 +157,16 @@ function Arrow(props: {
 interface CarouselImageProps {
   imagePath: string;
   isActive: boolean;
+  title: string;
+  category: string;
 }
 
-function CasrouselImage({ imagePath, isActive }: CarouselImageProps) {
+function CasrouselImage({
+  imagePath,
+  isActive,
+  title,
+  category,
+}: CarouselImageProps) {
   const [showContent, setShowContent] = useState(isActive);
 
   useEffect(() => {
@@ -163,10 +199,10 @@ function CasrouselImage({ imagePath, isActive }: CarouselImageProps) {
               : "text-black"
           }`}
         >
-          Contemporary Pendant Lighting
+          {title}
         </h2>
         <span className='text-xl font-normal text-[#888] pb-2 border-b border-[#888] w-fit cursor-pointer hover:text-main  ease-in-out duration-200'>
-          Interior
+          {category}
         </span>
       </div>
       <Image
