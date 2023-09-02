@@ -186,7 +186,7 @@ function CasrouselImage({
   }, [isActive]);
 
   return (
-    <div className='keen-slider__slide number-slide relative'>
+    <div className='keen-slider__slide number-slide relative max-h-144'>
       <div
         className={`absolute z-10 top:50 left-64 max-w-sm flex flex-col gap-4 duration-1000 ${
           showContent ? "opacity-100" : "opacity-0"

@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import Backdrop from "./Backdrop";
-import CloseWindow from "../ui/CloseWindow";
+import CloseWindow from "../../ui/CloseWindow";
 import Header from "./Header";
 import Input from "./Input";
-import LoadingSpinner from "../ui/LoadingSpinner";
+import LoadingSpinner from "../../ui/LoadingSpinner";
 import Separator from "./Separator";
 
 interface Props {
