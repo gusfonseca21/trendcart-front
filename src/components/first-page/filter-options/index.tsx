@@ -1,7 +1,7 @@
 import { FilterOptType } from "@/types";
-import React from "react";
+import React, { useState } from "react";
 
-const filterOptions: FilterOptType[] = [
+export const filterOptions: FilterOptType[] = [
   "Todos",
   "Bolsas e Mochilas",
   "Decoração",
@@ -9,21 +9,64 @@ const filterOptions: FilterOptType[] = [
   "Interior",
 ];
 
-function FilterButton({ filter }: { filter: FilterOptType }) {
-  return <button onClick={() => console.log(filter)}>{filter}</button>;
+interface FilterOptionsProps {
+  selectedFilter: FilterOptType;
+  setSelectedFilter: React.Dispatch<React.SetStateAction<FilterOptType>>;
 }
 
-filterOptions.forEach((t) => console.log(t));
+const slash = <span className='text-gray-300'>/</span>;
 
-export default function FilterOptions() {
+export default function FilterOptions({
+  setSelectedFilter,
+  selectedFilter,
+}: FilterOptionsProps) {
+  const [filterOrSearchMode, setFilterOrSearchMode] = useState<
+    null | "filter" | "search"
+  >(null);
+
   return (
-    <div className='h-36 w-full bg-red-100 px-40'>
-      <div className='h-full bg-blue-200'>
-        {filterOptions.map((option) => (
-          <FilterButton key={option} filter={option} />
+    <div className='h-36 w-full flex justify-around font-medium'>
+      <div className='h-full flex justify-center items-center gap-5 '>
+        {filterOptions.map((option, index) => (
+          <>
+            <button
+              key={option}
+              className={`h-max hover:text-main transition-text ${
+                selectedFilter === option ? "text-main" : "text-gray-400"
+              }`}
+              onClick={() => setSelectedFilter(option)}
+            >
+              {option}
+            </button>
+            {index < filterOptions.length - 1 && slash}
+          </>
         ))}
       </div>
-      <div className='h-full bg-green-200'></div>
+      <div className='h-full flex justify-end items-center gap-5'>
+        <button
+          className={`h-max w-max hover:text-main ${
+            filterOrSearchMode === "filter" ? "text-main" : "text-gray-400"
+          }`}
+          onClick={() => {
+            if (filterOrSearchMode === "filter") setFilterOrSearchMode(null);
+            else setFilterOrSearchMode("filter");
+          }}
+        >
+          Filtros
+        </button>
+        {slash}
+        <button
+          className={`h-max w-max hover:text-main ${
+            filterOrSearchMode === "search" ? "text-main" : "text-gray-400"
+          }`}
+          onClick={() => {
+            if (filterOrSearchMode === "search") setFilterOrSearchMode(null);
+            else setFilterOrSearchMode("search");
+          }}
+        >
+          Buscar
+        </button>
+      </div>
     </div>
   );
 }

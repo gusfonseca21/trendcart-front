@@ -63,6 +63,9 @@ const config: Config = {
           border: "1px solid #ccc",
           padding: "0.75rem 0.5rem 0.75rem 0.5rem",
         },
+        ".transition-text": {
+          transition: "all 200ms ease-in-out",
+        },
       });
     }),
   ],

@@ -28,7 +28,7 @@ export default function RootLayout({
 
   return (
     <html className='flex justify-center' lang='en'>
-      <body className={`${inter.className} w-[1600px]`}>
+      <body className={`${inter.className} w-full`}>
         <SignInModal openSignIn={openSignIn} setOpenSignIn={setOpenSignIn} />
         <Navbar setOpenSignIn={setOpenSignIn} />
         <main className='min-h-screen top-0 relative'>{children}</main>
