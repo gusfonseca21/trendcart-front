@@ -2,29 +2,41 @@
 import { useState, useEffect } from "react";
 import FilterOptions from "@/components/first-page/filter-options";
 import HeroCarousel from "@/components/first-page/hero-carousel";
-import { FilterOptType, Product, filterToParam } from "@/types";
+import { FilterOptType, Product } from "@/types";
 import axios from "axios";
 import ProductsDisplay from "@/components/first-page/products-display";
 
 export default function Home() {
   const [selectedFilter, setSelectedFilter] = useState<FilterOptType>("Todos");
+  const [productPage, setProductPage] = useState<number>(1);
+  const [lastProdPage, setLastProdPage] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loadingFilProducts, setLoadingFilProducts] = useState(true);
 
-  console.log(filteredProducts);
-
   useEffect(() => {
     fetchProducts(selectedFilter);
-  }, [selectedFilter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter, productPage]);
 
   async function fetchProducts(filterOption: FilterOptType) {
     setLoadingFilProducts(true);
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
       const response = await axios.get(
-        backendUrl + "/products?filter=" + filterToParam[filterOption]
+        backendUrl +
+          "/products?filter=" +
+          selectedFilter +
+          `&page=${productPage}`
       );
-      setFilteredProducts(response.data.data);
+
+      setLastProdPage(response.data.lastPage);
+
+      setFilteredProducts((prevState) => {
+        const newProdArr = prevState;
+        newProdArr.push(...response.data.data);
+        return newProdArr;
+      });
+
       setLoadingFilProducts(false);
     } catch (err) {
       console.log(err);
@@ -33,7 +45,7 @@ export default function Home() {
   }
 
   return (
-    <div className='w-full h-full flex flex-col justify-center'>
+    <div className='w-full h-full flex flex-col justify-center pb-5'>
       <HeroCarousel />
       <FilterOptions
         selectedFilter={selectedFilter}
@@ -42,6 +54,8 @@ export default function Home() {
       <ProductsDisplay
         filteredProducts={filteredProducts}
         loading={loadingFilProducts}
+        setPage={setProductPage}
+        lastPage={lastProdPage}
       />
     </div>
   );

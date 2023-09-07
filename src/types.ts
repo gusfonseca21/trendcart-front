@@ -5,14 +5,6 @@ export type FilterOptType =
   | "Essenciais"
   | "Interior";
 
-export const filterToParam: Record<FilterOptType, string> = {
-  Todos: "all",
-  "Bolsas e Mochilas": "bags",
-  Decoração: "decoration",
-  Essenciais: "essentials",
-  Interior: "interior",
-};
-
 export type Color =
   | "Preto"
   | "Bege"

@@ -5,10 +5,13 @@ import React, { useState } from "react";
 interface ProductsDisplayProps {
   filteredProducts: Product[];
   loading: boolean;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  lastPage: boolean;
 }
 
 interface ProductProps {
   productData: Product;
+  lastPage: boolean;
 }
 
 const subTextStyle =
@@ -17,14 +20,38 @@ const subTextStyle =
 export default function ProductsDisplay({
   filteredProducts,
   loading,
+  setPage,
+  lastPage,
 }: ProductsDisplayProps) {
   return (
     <div className='max-w-[1300px] h-max self-center px-8 flex flex-row flex-wrap justify-around gap-5'>
       {loading && <h1>Carregando...</h1>}
       {!loading &&
         filteredProducts.map((product) => (
-          <Product productData={product} key={product._id} />
+          <Product
+            productData={product}
+            lastPage={lastPage}
+            key={product._id}
+          />
         ))}
+      <div
+        className={`w-full p-5 flex justify-center border-gray-300 border-2 duration-150 ${
+          !lastPage ? "cursor-pointer hover:text-gray-400" : "cursor-default"
+        }`}
+        onClick={() => {
+          if (lastPage) return;
+          setPage((prevState) => {
+            if (prevState) {
+              return prevState + 1;
+            }
+            return prevState;
+          });
+        }}
+      >
+        <span className='font-light'>
+          {!lastPage ? "Carregar Mais" : "Todos os produtos foram carregados"}
+        </span>
+      </div>
     </div>
   );
 }
@@ -35,7 +62,6 @@ function Product({ productData }: ProductProps) {
 
   const colors = productData.colors.map((color) => colorToHex[color]);
 
-  console.log(colors);
   return (
     <div className='w-[270px] h-[400px] flex flex-col'>
       <div
@@ -69,18 +95,18 @@ function Product({ productData }: ProductProps) {
         <Image
           src={`/products/${productData.images[0]}.jpg`}
           alt={productData.name}
-          width={270}
-          height={400}
           className='absolute top-0 left-0 opacity-1'
+          fill
+          sizes='auto'
         />
         <Image
           src={`/products/${productData.images[1]}.jpg`}
           alt={productData.name}
-          width={270}
-          height={400}
           className={`absolute top-0 left-0 z-10 ${
             isImageHovered ? "opacity-1" : "opacity-0"
           } transition-opacity duration-300`}
+          fill
+          sizes='auto'
         />
       </div>
       <div
