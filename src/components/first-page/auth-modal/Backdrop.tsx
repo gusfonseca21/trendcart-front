@@ -26,7 +26,7 @@ export default function Backdrop({
       onClick={(e) => closeOnBackDropClick(e)}
       className={
         openSignIn
-          ? "w-full bg-black bg-opacity-20 fixed top-0 left-0 bottom-0 z-20 flex justify-center items-center"
+          ? "w-full bg-black bg-opacity-20 fixed top-0 left-0 bottom-0 z-50 flex justify-center items-center"
           : "hidden"
       }
     >

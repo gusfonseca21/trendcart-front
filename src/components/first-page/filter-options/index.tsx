@@ -28,7 +28,7 @@ export default function FilterOptions({
     <div className='h-36 w-full flex justify-around font-medium'>
       <div className='h-full flex justify-center items-center gap-5 '>
         {filterOptions.map((option, index) => (
-          <>
+          <React.Fragment key={option}>
             <button
               key={option}
               className={`h-max hover:text-main transition-text ${
@@ -39,7 +39,7 @@ export default function FilterOptions({
               {option}
             </button>
             {index < filterOptions.length - 1 && slash}
-          </>
+          </React.Fragment>
         ))}
       </div>
       <div className='h-full flex justify-end items-center gap-5'>

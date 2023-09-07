@@ -102,7 +102,7 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   return (
     <Backdrop openSignIn={openSignIn} closeModalHandler={closeModalHandler}>
       <dialog
-        className={`px-10 py-10 w-144 bg-white z-30 relative flex flex-col justify-around items-center `}
+        className={`px-10 py-10 w-144 bg-white z-50 relative flex flex-col justify-around items-center `}
         open={openSignIn}
         onAnimationEnd={() => setContentTransition("")}
       >
