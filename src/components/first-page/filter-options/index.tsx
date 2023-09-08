@@ -10,15 +10,15 @@ export const filterOptions: FilterOptType[] = [
 ];
 
 interface FilterOptionsProps {
-  selectedFilter: FilterOptType;
-  setSelectedFilter: React.Dispatch<React.SetStateAction<FilterOptType>>;
+  filCategory: FilterOptType;
+  setFilCategory: React.Dispatch<React.SetStateAction<FilterOptType>>;
 }
 
 const slash = <span className='text-gray-300'>/</span>;
 
 export default function FilterOptions({
-  setSelectedFilter,
-  selectedFilter,
+  setFilCategory,
+  filCategory,
 }: FilterOptionsProps) {
   const [filterOrSearchMode, setFilterOrSearchMode] = useState<
     null | "filter" | "search"
@@ -32,9 +32,9 @@ export default function FilterOptions({
             <button
               key={option}
               className={`h-max hover:text-main transition-text ${
-                selectedFilter === option ? "text-main" : "text-gray-400"
+                filCategory === option ? "text-main" : "text-gray-400"
               }`}
-              onClick={() => setSelectedFilter(option)}
+              onClick={() => setFilCategory(option)}
             >
               {option}
             </button>

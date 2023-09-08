@@ -5,7 +5,7 @@ import React, { useState } from "react";
 interface ProductsDisplayProps {
   filteredProducts: Product[];
   loading: boolean;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  showMoreFunc: () => void;
   lastPage: boolean;
 }
 
@@ -20,9 +20,14 @@ const subTextStyle =
 export default function ProductsDisplay({
   filteredProducts,
   loading,
-  setPage,
+  showMoreFunc,
   lastPage,
 }: ProductsDisplayProps) {
+  function showMoreHandler() {
+    if (lastPage) return;
+    showMoreFunc();
+  }
+
   return (
     <div className='max-w-[1300px] h-max self-center px-8 flex flex-row flex-wrap justify-around gap-5'>
       {loading && <h1>Carregando...</h1>}
@@ -38,15 +43,7 @@ export default function ProductsDisplay({
         className={`w-full p-5 flex justify-center border-gray-300 border-2 duration-150 ${
           !lastPage ? "cursor-pointer hover:text-gray-400" : "cursor-default"
         }`}
-        onClick={() => {
-          if (lastPage) return;
-          setPage((prevState) => {
-            if (prevState) {
-              return prevState + 1;
-            }
-            return prevState;
-          });
-        }}
+        onClick={showMoreHandler}
       >
         <span className='font-light'>
           {!lastPage ? "Carregar Mais" : "Todos os produtos foram carregados"}
@@ -98,6 +95,7 @@ function Product({ productData }: ProductProps) {
           className='absolute top-0 left-0 opacity-1'
           fill
           sizes='auto'
+          quality={75}
         />
         <Image
           src={`/products/${productData.images[1]}.jpg`}
@@ -107,6 +105,7 @@ function Product({ productData }: ProductProps) {
           } transition-opacity duration-300`}
           fill
           sizes='auto'
+          quality={75}
         />
       </div>
       <div
