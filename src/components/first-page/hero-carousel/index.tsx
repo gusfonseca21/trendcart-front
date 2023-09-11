@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./style.css";
 import axios from "axios";
 import Image from "next/image";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 type HeroProduct = {
   _id: string;
@@ -54,7 +55,7 @@ export default function HeroCarousel() {
   }, [currentSlide]);
 
   // fetch de Produtos do hero
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async function () {
       try {
         const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -70,7 +71,7 @@ export default function HeroCarousel() {
   return (
     <>
       <div className='navigation-wrapper'>
-        {!!heroProducts.length && (
+        {!!heroProducts.length ? (
           <div ref={sliderRef} className='keen-slider'>
             {heroProducts.map((product, index) => {
               return (
@@ -83,6 +84,10 @@ export default function HeroCarousel() {
                 />
               );
             })}
+          </div>
+        ) : (
+          <div className='w-full h-144 flex justify-center items-center'>
+            <LoadingSpinner width={50} height={50} />
           </div>
         )}
         {loaded && instanceRef.current && (
@@ -186,7 +191,7 @@ function CasrouselImage({
   }, [isActive]);
 
   return (
-    <div className='keen-slider__slide number-slide relative max-h-144'>
+    <div className='keen-slider__slide number-slide relative !bg-white !w-full'>
       <div
         className={`absolute z-10 top:50 left-52 max-w-sm flex flex-col gap-4 duration-1000 ${
           showContent ? "opacity-100" : "opacity-0"
@@ -207,11 +212,12 @@ function CasrouselImage({
       </div>
       <Image
         src={`/products/${imagePath}.jpg`}
-        className='object-cover'
+        className='object-cover w-full'
         fill
         alt={imagePath}
         priority
-        unoptimized
+        quality={100}
+        loading='eager'
       />
     </div>
   );

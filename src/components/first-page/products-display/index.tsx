@@ -1,6 +1,7 @@
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { Color, Product, colorToHex } from "@/types";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ProductsDisplayProps {
   filteredProducts: Product[];
@@ -30,24 +31,22 @@ export default function ProductsDisplay({
 
   return (
     <div className='max-w-[1300px] h-max self-center px-8 flex flex-row flex-wrap justify-around gap-5'>
-      {loading && <h1>Carregando...</h1>}
-      {!loading &&
-        filteredProducts.map((product) => (
-          <Product
-            productData={product}
-            lastPage={lastPage}
-            key={product._id}
-          />
-        ))}
+      {filteredProducts.map((product) => (
+        <Product productData={product} lastPage={lastPage} key={product._id} />
+      ))}
       <div
-        className={`w-full p-5 flex justify-center border-gray-300 border-2 duration-150 ${
+        className={`min-w-full p-5 flex justify-center border-gray-300 border-2 duration-150 ${
           !lastPage ? "cursor-pointer hover:text-gray-400" : "cursor-default"
         }`}
         onClick={showMoreHandler}
       >
-        <span className='font-light'>
-          {!lastPage ? "Carregar Mais" : "Todos os produtos foram carregados"}
-        </span>
+        {!loading ? (
+          <span className='font-light'>
+            {!lastPage ? "Carregar Mais" : "Todos os produtos foram carregados"}
+          </span>
+        ) : (
+          <LoadingSpinner />
+        )}
       </div>
     </div>
   );
@@ -88,7 +87,6 @@ function Product({ productData }: ProductProps) {
               />
             ))}
         </div>
-
         <Image
           src={`/products/${productData.images[0]}.jpg`}
           alt={productData.name}
@@ -96,6 +94,8 @@ function Product({ productData }: ProductProps) {
           fill
           sizes='auto'
           quality={75}
+          priority
+          loading='eager'
         />
         <Image
           src={`/products/${productData.images[1]}.jpg`}
@@ -106,6 +106,7 @@ function Product({ productData }: ProductProps) {
           fill
           sizes='auto'
           quality={75}
+          placeholder='empty'
         />
       </div>
       <div

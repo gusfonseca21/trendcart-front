@@ -73,7 +73,7 @@ export default function Home() {
   }
 
   return (
-    <div className='w-full h-full flex flex-col justify-center pb-5'>
+    <div className='flex flex-col pb-5 w-full h-full'>
       <HeroCarousel />
       <FilterOptions
         filCategory={filCategory}
