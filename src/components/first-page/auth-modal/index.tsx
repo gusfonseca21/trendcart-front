@@ -73,7 +73,6 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
     e.currentTarget.disabled = true;
     setReqBtnAnimation(clickBtnAnimation);
     if (loading) return;
-    console.log("first");
     setLoading(true);
     try {
       if (authMode === "signIn") {

@@ -11,9 +11,10 @@ const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 export default function Home() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [filCategory, setFilCategory] = useState<FilterOptType>("Todos");
+  const [sort, setSort] = useState<string>("_id");
   const [productPage, setProductPage] = useState<number>(1);
   const [lastProdPage, setLastProdPage] = useState(false);
-  const [loadingFilProducts, setLoadingFilProducts] = useState(false);
+  const [loadingFilProducts, setLoadingFilProducts] = useState(true);
 
   useEffect(() => {
     (async function () {
@@ -23,13 +24,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    changeFilter();
+    updateProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filCategory]);
+  }, [filCategory, sort]);
 
-  async function changeFilter() {
+  async function updateProducts() {
     try {
-      const { data, isLastPage } = await fetchProducts(filCategory, 1);
+      const { data, isLastPage } = await fetchProducts(filCategory, 1, sort);
 
       setFilteredProducts(data);
       setLastProdPage(isLastPage);
@@ -42,7 +43,8 @@ export default function Home() {
     try {
       const { data, isLastPage } = await fetchProducts(
         filCategory,
-        productPage + 1
+        productPage + 1,
+        sort
       );
 
       setFilteredProducts((prevState) => {
@@ -59,16 +61,23 @@ export default function Home() {
 
   async function fetchProducts(
     filter: FilterOptType = "Todos",
-    page: number = 1
+    page: number = 1,
+    sort: string = "_id"
   ) {
+    setLoadingFilProducts(true);
     try {
       const response = await axios.get(
-        backendUrl + "/products?filter=" + filter + `&page=${page}`
+        backendUrl +
+          "/products?filter=" +
+          filter +
+          `&page=${page}` +
+          `&sort=${sort}`
       );
+      setLoadingFilProducts(false);
       return response.data;
     } catch (err) {
       console.log(err);
-      return;
+      setLoadingFilProducts(false);
     }
   }
 
@@ -78,6 +87,7 @@ export default function Home() {
       <FilterOptions
         filCategory={filCategory}
         setFilCategory={setFilCategory}
+        setSort={setSort}
       />
       <ProductsDisplay
         filteredProducts={filteredProducts}

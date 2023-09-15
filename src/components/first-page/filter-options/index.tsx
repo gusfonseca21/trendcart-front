@@ -1,5 +1,5 @@
+import React from "react";
 import { FilterOptType } from "@/types";
-import React, { useState } from "react";
 
 export const filterOptions: FilterOptType[] = [
   "Todos",
@@ -12,6 +12,7 @@ export const filterOptions: FilterOptType[] = [
 interface FilterOptionsProps {
   filCategory: FilterOptType;
   setFilCategory: React.Dispatch<React.SetStateAction<FilterOptType>>;
+  setSort: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const slash = <span className='text-gray-300'>/</span>;
@@ -19,11 +20,8 @@ const slash = <span className='text-gray-300'>/</span>;
 export default function FilterOptions({
   setFilCategory,
   filCategory,
+  setSort,
 }: FilterOptionsProps) {
-  const [filterOrSearchMode, setFilterOrSearchMode] = useState<
-    null | "filter" | "search"
-  >(null);
-
   return (
     <div className='h-36 w-full flex justify-around font-medium'>
       <div className='h-full flex justify-center items-center gap-5 '>
@@ -43,29 +41,18 @@ export default function FilterOptions({
         ))}
       </div>
       <div className='h-full flex justify-end items-center gap-5'>
-        <button
-          className={`h-max w-max hover:text-main ${
-            filterOrSearchMode === "filter" ? "text-main" : "text-gray-400"
-          }`}
-          onClick={() => {
-            if (filterOrSearchMode === "filter") setFilterOrSearchMode(null);
-            else setFilterOrSearchMode("filter");
-          }}
+        <label htmlFor='order' className='text-gray-400'>
+          Ordernar:
+        </label>
+        <select
+          id='order'
+          className='text-main'
+          onChange={(event) => setSort(event.target.value)}
         >
-          Filtros
-        </button>
-        {slash}
-        <button
-          className={`h-max w-max hover:text-main ${
-            filterOrSearchMode === "search" ? "text-main" : "text-gray-400"
-          }`}
-          onClick={() => {
-            if (filterOrSearchMode === "search") setFilterOrSearchMode(null);
-            else setFilterOrSearchMode("search");
-          }}
-        >
-          Buscar
-        </button>
+          <option value='_id'>Escolher</option>
+          <option value='price'>Preço crescente</option>
+          <option value='-price'>Preço decrescente</option>
+        </select>
       </div>
     </div>
   );

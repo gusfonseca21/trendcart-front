@@ -30,7 +30,7 @@ export default function ProductsDisplay({
   }
 
   return (
-    <div className='max-w-[1300px] h-max self-center px-8 flex flex-row flex-wrap justify-around gap-5'>
+    <div className='w-full  h-max self-center px-8 flex flex-row flex-wrap justify-around gap-5'>
       {filteredProducts.map((product) => (
         <Product productData={product} lastPage={lastPage} key={product._id} />
       ))}
@@ -45,7 +45,7 @@ export default function ProductsDisplay({
             {!lastPage ? "Carregar Mais" : "Todos os produtos foram carregados"}
           </span>
         ) : (
-          <LoadingSpinner />
+          <LoadingSpinner height={24} width={24} />
         )}
       </div>
     </div>
@@ -118,7 +118,9 @@ function Product({ productData }: ProductProps) {
           {productData.name}
         </span>
         <div className='relative w-full h-7'>
-          <span className={`${subTextStyle}`}>{`R$${productData.price}`}</span>
+          <span
+            className={`${subTextStyle}`}
+          >{`R$${productData.price}.00`}</span>
           <span
             className={`${subTextStyle} bg-white z-10 w-max border-b-2 border-gray-300 hover:text-main duration-150 ${
               isSubTextHovered ? "opacity-1" : "opacity-0"

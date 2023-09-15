@@ -39,7 +39,7 @@ export interface Product {
   _id: string;
   name: string;
   category: "Bolsas e Mochilas" | "Decoração" | "Essenciais" | "Interior";
-  price: string;
+  price: number;
   description: string;
   images: string[];
   hero?: {
