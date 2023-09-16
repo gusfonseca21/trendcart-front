@@ -1,7 +1,7 @@
 import { useState, useEffect, useLayoutEffect } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
-import "./style.css";
+import "./HeroCarousel.css";
 import axios from "axios";
 import Image from "next/image";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";

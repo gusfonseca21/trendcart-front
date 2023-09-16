@@ -1,10 +1,35 @@
-import React from "react";
+"use client";
+import { Product } from "@/types";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-interface PageParams {
-  id: string;
-}
+type PageParams = {
+  params: {
+    id: string;
+  };
+};
 
-export default function Page(params: PageParams) {
-  console.log(params);
-  return <div>page</div>;
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+export default function Page({ params }: PageParams) {
+  const [product, setProduct] = useState<Product | null>(null);
+  const productId = params.id;
+  useEffect(() => {
+    if (params.id) {
+      fetchProduct();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function fetchProduct() {
+    try {
+      const result = await axios.get(`${backendUrl}/products/${productId}`);
+
+      console.log(result.data.data);
+      setProduct(product);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  return <div>{params.id}</div>;
 }

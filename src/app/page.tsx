@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-import FilterOptions from "@/components/first-page/filter-options";
-import HeroCarousel from "@/components/first-page/hero-carousel";
 import { FilterOptType, Product } from "@/types";
 import axios from "axios";
-import ProductsDisplay from "@/components/first-page/products-display";
+import FilterOptions from "@/components/pages/home/FilterOptions";
+import ProductsDisplay from "@/components/pages/home/ProductsDisplay";
+import HeroCarousel from "@/components/pages/home/HeroCarousel";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -34,6 +34,7 @@ export default function Home() {
 
       setFilteredProducts(data);
       setLastProdPage(isLastPage);
+      setProductPage(1);
     } catch (err) {
       console.log(err);
     }

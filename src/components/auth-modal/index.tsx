@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import Backdrop from "./Backdrop";
-import CloseWindow from "../../ui/CloseWindow";
+import CloseWindow from "../ui/CloseWindow";
 import Header from "./Header";
 import Input from "./Input";
-import LoadingSpinner from "../../ui/LoadingSpinner";
+import LoadingSpinner from "../ui/LoadingSpinner";
 import Separator from "./Separator";
 
 interface Props {
@@ -126,21 +126,21 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
               minLength={4}
             />
           </div>
-          <div className='flex flex-col gap-5'>
+          <div className='flex flex-col gap-5 justify-center'>
             <button
               disabled={loading}
               type='submit'
-              className={`input bg-black text-white transition-black-opacity ${reqBtnAnimation}`}
+              className={`input bg-black text-white transition-black-opacity ${reqBtnAnimation} flex items-center justify-center h-12`}
               onAnimationEnd={() => setReqBtnAnimation("")}
             >
               {!loading && (authMode === "signIn" ? "Entrar" : "Registrar")}
-              {loading && <LoadingSpinner />}
+              {loading && <LoadingSpinner width={20} height={20} />}
             </button>
             <Separator />
             <button
               onClick={changeAuthMode}
               type='button'
-              className='input bg-white text-black hover:border-black active:animate-button-click'
+              className='input bg-white text-black hover:border-black active:animate-button-click h-12'
               ref={authModeBtnRef}
             >
               {authMode === "signIn" ? "Criar uma conta" : "Entrar"}

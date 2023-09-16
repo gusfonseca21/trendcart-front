@@ -1,7 +1,8 @@
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { Color, Product, colorToHex } from "@/types";
+import { Product, colorToHex } from "@/types";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 interface ProductsDisplayProps {
   filteredProducts: Product[];
@@ -30,7 +31,7 @@ export default function ProductsDisplay({
   }
 
   return (
-    <div className='w-full  h-max self-center px-8 flex flex-row flex-wrap justify-around gap-5'>
+    <div className='w-3/4 h-max self-center px-20 flex flex-row flex-wrap justify-around gap-5'>
       {filteredProducts.map((product) => (
         <Product productData={product} lastPage={lastPage} key={product._id} />
       ))}
@@ -56,10 +57,15 @@ function Product({ productData }: ProductProps) {
   const [isImageHovered, setIsImageHovered] = useState(false);
   const [isSubTextHovered, setIsSubTextHovered] = useState(false);
 
+  const router = useRouter();
+
   const colors = productData.colors.map((color) => colorToHex[color]);
 
   return (
-    <div className='w-[270px] h-[400px] flex flex-col'>
+    <div
+      className='w-[270px] h-[400px] flex flex-col'
+      onClick={() => router.push(`/product/${productData._id}`)}
+    >
       <div
         className='w-full h-[340px] relative hover:cursor-pointer'
         onMouseEnter={() => {
@@ -110,14 +116,14 @@ function Product({ productData }: ProductProps) {
         />
       </div>
       <div
-        className='w-full z-10 flex flex-col'
+        className='min-w-full z-10 flex flex-col'
         onMouseEnter={() => setIsSubTextHovered(true)}
         onMouseLeave={() => setIsSubTextHovered(false)}
       >
         <span className='max-w-max-content text-base font-light text-gray-500 hover:cursor-pointer'>
           {productData.name}
         </span>
-        <div className='relative w-full h-7'>
+        <div className='relative min-w-full h-7'>
           <span
             className={`${subTextStyle}`}
           >{`R$${productData.price}.00`}</span>
