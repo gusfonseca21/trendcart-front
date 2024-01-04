@@ -5,6 +5,9 @@ import axios from "axios";
 import FilterOptions from "@/components/pages/home/FilterOptions";
 import ProductsDisplay from "@/components/pages/home/ProductsDisplay";
 import HeroCarousel from "@/components/pages/home/HeroCarousel";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { HeroProduct } from "@/types";
+import { NAVBAR_HEIGHT } from "@/components/Navbar";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -15,9 +18,11 @@ export default function Home() {
   const [productPage, setProductPage] = useState<number>(1);
   const [lastProdPage, setLastProdPage] = useState(false);
   const [loadingFilProducts, setLoadingFilProducts] = useState(true);
+  const [heroProducts, setHeroProducts] = useState<HeroProduct[] | null>(null);
 
   useEffect(() => {
     (async function () {
+      fetchHeroData();
       const { data } = await fetchProducts();
       setFilteredProducts(data);
     })();
@@ -82,20 +87,42 @@ export default function Home() {
     }
   }
 
+  async function fetchHeroData() {
+    try {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      const result = await axios.get(backendUrl + "/products/hero");
+      setHeroProducts(result.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className='flex flex-col pb-5 w-full h-full'>
-      <HeroCarousel />
-      <FilterOptions
-        filCategory={filCategory}
-        setFilCategory={setFilCategory}
-        setSort={setSort}
-      />
-      <ProductsDisplay
-        filteredProducts={filteredProducts}
-        loading={loadingFilProducts}
-        showMoreFunc={fetchMore}
-        lastPage={lastProdPage}
-      />
+      {heroProducts ? (
+        <>
+          <HeroCarousel heroProducts={heroProducts} />
+          <FilterOptions
+            filCategory={filCategory}
+            setFilCategory={setFilCategory}
+            setSort={setSort}
+          />
+          <ProductsDisplay
+            filteredProducts={filteredProducts}
+            loading={loadingFilProducts}
+            showMoreFunc={fetchMore}
+            lastPage={lastProdPage}
+          />
+        </>
+      ) : (
+        <div
+          className={`w-full h-[${
+            100 - NAVBAR_HEIGHT
+          }vh] flex justify-center items-center`}
+        >
+          <LoadingSpinner width={50} height={50} />
+        </div>
+      )}
     </div>
   );
 }

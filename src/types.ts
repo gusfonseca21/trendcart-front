@@ -50,3 +50,13 @@ export interface Product {
   ratingsAverage: number;
   reviews: Review[];
 }
+
+export type HeroProduct = {
+  _id: string;
+  name: string;
+  category: string;
+  hero: {
+    image: string;
+    title: string;
+  };
+};

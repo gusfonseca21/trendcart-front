@@ -31,7 +31,7 @@ export default function ProductsDisplay({
   }
 
   return (
-    <div className='w-3/4 h-max self-center px-20 flex flex-row flex-wrap justify-around gap-5'>
+    <div className='w-full h-max self-center px-20 flex flex-row flex-wrap justify-around gap-5'>
       {filteredProducts.map((product) => (
         <Product productData={product} lastPage={lastPage} key={product._id} />
       ))}

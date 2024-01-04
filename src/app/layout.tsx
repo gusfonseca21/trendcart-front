@@ -60,11 +60,11 @@ export default function RootLayout({
         <meta name='msapplication-TileColor' content='#da532c' />
         <meta name='theme-color' content='#ffffff'></meta>
       </head>
-      <body className={`${inter.className} h-full w-full px-[5%]`}>
+      <body className={`${inter.className} h-full w-full`}>
         <Toast />
         <SignInModal openSignIn={openSignIn} setOpenSignIn={setOpenSignIn} />
         <Navbar setOpenSignIn={setOpenSignIn} />
-        <main className='min-h-screen top-0 relative'>{children}</main>
+        <main className='top-0 relative'>{children}</main>
       </body>
     </html>
   );

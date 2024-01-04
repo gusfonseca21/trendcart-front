@@ -1,23 +1,15 @@
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import "./HeroCarousel.css";
-import axios from "axios";
 import Image from "next/image";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { HeroProduct } from "@/types";
 
-type HeroProduct = {
-  _id: string;
-  name: string;
-  category: string;
-  hero: {
-    image: string;
-    title: string;
-  };
-};
-
-export default function HeroCarousel() {
-  const [heroProducts, setHeroProducts] = useState<HeroProduct[]>([]);
+interface HeroCaouselProps {
+  heroProducts: HeroProduct[];
+}
+export default function HeroCarousel({ heroProducts }: HeroCaouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [direction, setDirection] = useState<"next" | "prev">("next");
@@ -53,20 +45,6 @@ export default function HeroCarousel() {
     return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSlide]);
-
-  // fetch de Produtos do hero
-  useLayoutEffect(() => {
-    (async function () {
-      try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-        const result = await axios.get(backendUrl + "/products/hero");
-
-        setHeroProducts(result.data.data);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, []);
 
   return (
     <>
