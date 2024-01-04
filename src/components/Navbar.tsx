@@ -28,7 +28,9 @@ export default function Navbar({ setOpenSignIn }: Props) {
       </div>
       <div>
         <div className={linkListStyle}>
-          <a className='font-medium text-2xl tracking-widest'>TrendCart</a>
+          <a href='/' className='font-medium text-2xl tracking-widest'>
+            TrendCart
+          </a>
         </div>
       </div>
       <div>

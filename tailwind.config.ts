@@ -45,6 +45,7 @@ const config: Config = {
       },
       colors: {
         main: "#dc9814",
+        "main-grey": "#eeefef",
       },
     },
   },

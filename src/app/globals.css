@@ -4,6 +4,7 @@
 
 :root {
   --secondary-color: #dc9814;
+  --background-grey: #eeefef;
 }
 
 body {
@@ -15,4 +16,31 @@ body {
 
 a {
   cursor: pointer;
+}
+
+/* Toastify animations */
+.fade-in {
+  animation: fade-in 0.2s ease-in both;
+}
+
+.fade-out {
+  animation: fade-out 0.2s ease-out both;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

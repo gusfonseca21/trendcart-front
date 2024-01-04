@@ -31,5 +31,9 @@ export default function Page({ params }: PageParams) {
       console.log(err);
     }
   }
-  return <div>{params.id}</div>;
+  return (
+    <div className='bg-main-grey flex center h-full w-screen left-10'>
+      <div>{params.id}</div>
+    </div>
+  );
 }

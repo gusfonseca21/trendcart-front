@@ -6,6 +6,7 @@ import Header from "./Header";
 import Input from "./Input";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import Separator from "./Separator";
+import { toast } from "react-toastify";
 
 interface Props {
   openSignIn: boolean;
@@ -76,20 +77,19 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
     setLoading(true);
     try {
       if (authMode === "signIn") {
-        const result = await axios.post(authServiceUrl + "/login", {
-          email,
-          password,
-        });
-
-        console.log(result);
+        const result = await request("/login");
+        if (result.status === 200) {
+          closeModalHandler();
+          toast("Login feito com sucesso");
+        }
       }
 
       if (authMode === "register") {
-        const result = await axios.post(authServiceUrl + "/signup", {
-          email,
-          password,
-        });
-        console.log(result.data);
+        const result = await request("/signup");
+        if (result.status === 201) {
+          closeModalHandler();
+          toast("Registro feito com sucesso");
+        }
       }
       setLoading(false);
     } catch (err: any) {
@@ -97,6 +97,13 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
       setLoading(false);
     }
   }
+
+  const request = async (service: string) => {
+    return await axios.post(authServiceUrl + service, {
+      email,
+      password,
+    });
+  };
 
   return (
     <Backdrop openSignIn={openSignIn} closeModalHandler={closeModalHandler}>
