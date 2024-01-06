@@ -178,13 +178,17 @@ function CasrouselImage({
         <h2
           className={`text-3xl font-normal m-0 ${
             imagePath === "slider-pendant-lighting"
-              ? "text-white"
-              : "text-black"
+              ? "text-zinc-50"
+              : "text-zinc-700"
           }`}
         >
           {title}
         </h2>
-        <span className='text-xl font-normal text-[#888] pb-2 border-b border-[#888] w-fit cursor-pointer hover:text-main  ease-in-out duration-200'>
+        <span
+          className={`text-xl font-normal text-light pb-1 w-fit cursor-pointer hover:text-main  ease-in-out duration-200 border-b border-[#888] ${
+            imagePath === "slider-pendant-lighting" && "text-gray-400 "
+          }`}
+        >
           {category}
         </span>
       </div>

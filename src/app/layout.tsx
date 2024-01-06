@@ -64,7 +64,7 @@ export default function RootLayout({
         <Toast />
         <SignInModal openSignIn={openSignIn} setOpenSignIn={setOpenSignIn} />
         <Navbar setOpenSignIn={setOpenSignIn} />
-        <main className='top-0 relative'>{children}</main>
+        <main className={`top-0 relative`}>{children}</main>
       </body>
     </html>
   );

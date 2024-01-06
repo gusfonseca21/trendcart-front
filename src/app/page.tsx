@@ -98,7 +98,7 @@ export default function Home() {
   }
 
   return (
-    <div className='flex flex-col pb-5 w-full h-full'>
+    <div className={`flex flex-col w-full`}>
       {heroProducts ? (
         <>
           <HeroCarousel heroProducts={heroProducts} />
@@ -116,9 +116,8 @@ export default function Home() {
         </>
       ) : (
         <div
-          className={`w-full h-[${
-            100 - NAVBAR_HEIGHT
-          }vh] flex justify-center items-center`}
+          className={`w-full flex justify-center items-center`}
+          style={{ minHeight: `calc(100vh - ${NAVBAR_HEIGHT}vh)` }}
         >
           <LoadingSpinner width={50} height={50} />
         </div>

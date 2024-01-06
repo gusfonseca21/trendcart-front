@@ -27,6 +27,12 @@ a {
   animation: fade-out 0.2s ease-out both;
 }
 
+@layer components {
+  .text-light {
+    @apply font-light text-gray-500 text-lg;
+  }
+}
+
 @keyframes fade-in {
   0% {
     opacity: 0;

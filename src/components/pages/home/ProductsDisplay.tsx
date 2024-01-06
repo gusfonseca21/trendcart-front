@@ -31,10 +31,16 @@ export default function ProductsDisplay({
   }
 
   return (
-    <div className='w-full h-max self-center px-20 flex flex-row flex-wrap justify-around gap-5'>
-      {filteredProducts.map((product) => (
-        <Product productData={product} lastPage={lastPage} key={product._id} />
-      ))}
+    <div className='w-3/4 h-max self-center px-20 flex flex-row flex-wrap justify-around mb-5'>
+      <div className='w-full flex gap-5 flex-row flex-wrap'>
+        {filteredProducts.map((product) => (
+          <Product
+            productData={product}
+            lastPage={lastPage}
+            key={product._id}
+          />
+        ))}
+      </div>
       <div
         className={`min-w-full p-5 flex justify-center border-gray-300 border-2 duration-150 ${
           !lastPage ? "cursor-pointer hover:text-gray-400" : "cursor-default"
