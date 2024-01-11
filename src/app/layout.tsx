@@ -31,7 +31,7 @@ export default function RootLayout({
   }, [openSignIn]);
 
   return (
-    <html className='flex justify-center' lang='en'>
+    <html className='flex justify-center h-full' lang='en'>
       <head>
         <title>{title ? title : "TrendCart"}</title>
         <link
@@ -64,7 +64,7 @@ export default function RootLayout({
         <Toast />
         <SignInModal openSignIn={openSignIn} setOpenSignIn={setOpenSignIn} />
         <Navbar setOpenSignIn={setOpenSignIn} />
-        <main className={`top-0 relative`}>{children}</main>
+        <main className={`top-0 relative h-full`}>{children}</main>
       </body>
     </html>
   );

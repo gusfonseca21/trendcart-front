@@ -99,27 +99,32 @@ function Product({ productData }: ProductProps) {
               />
             ))}
         </div>
-        <Image
-          src={`/products/${productData.images[0]}.jpg`}
-          alt={productData.name}
-          className='absolute top-0 left-0 opacity-1'
-          fill
-          sizes='auto'
-          quality={75}
-          priority
-          loading='eager'
-        />
-        <Image
-          src={`/products/${productData.images[1]}.jpg`}
-          alt={productData.name}
-          className={`absolute top-0 left-0 z-10 ${
-            isImageHovered ? "opacity-1" : "opacity-0"
-          } transition-opacity duration-300`}
-          fill
-          sizes='auto'
-          quality={75}
-          placeholder='empty'
-        />
+        {productData ? (
+          <>
+            <Image
+              src={`/products/${productData.images[0]}.jpg`}
+              alt={productData.name}
+              className='absolute top-0 left-0 opacity-1'
+              fill
+              sizes='auto'
+              draggable={false}
+              // priority
+            />
+            <Image
+              src={`/products/${productData.images[1]}.jpg`}
+              alt={productData.name}
+              className={`absolute top-0 left-0 z-10 ${
+                isImageHovered ? "opacity-1" : "opacity-0"
+              } transition-opacity duration-300`}
+              fill
+              sizes='auto'
+              draggable={false}
+              // quality={75}
+            />
+          </>
+        ) : (
+          <LoadingSpinner height={24} width={24} />
+        )}
       </div>
       <div
         className='min-w-full z-10 flex flex-col'

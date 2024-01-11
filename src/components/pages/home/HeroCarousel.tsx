@@ -5,6 +5,7 @@ import "./HeroCarousel.css";
 import Image from "next/image";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { HeroProduct } from "@/types";
+import Arrow from "@/components/ui/Arrow";
 
 interface HeroCaouselProps {
   heroProducts: HeroProduct[];
@@ -112,30 +113,30 @@ export default function HeroCarousel({ heroProducts }: HeroCaouselProps) {
   );
 }
 
-function Arrow(props: {
-  disabled: boolean;
-  left?: boolean;
-  onClick: (e: any) => void;
-}) {
-  const disabeld = props.disabled ? " arrow--disabled" : "";
-  return (
-    <svg
-      onClick={props.onClick}
-      className={`arrow ${
-        props.left ? "arrow--left" : "arrow--right"
-      } ${disabeld} h-20`}
-      xmlns='http://www.w3.org/2000/svg'
-      viewBox='0 0 24 24'
-    >
-      {props.left && (
-        <path d='M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z' />
-      )}
-      {!props.left && (
-        <path d='M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z' />
-      )}
-    </svg>
-  );
-}
+// export function Arrow(props: {
+//   disabled: boolean;
+//   left?: boolean;
+//   onClick: (e: any) => void;
+// }) {
+//   const disabeld = props.disabled ? " arrow--disabled" : "";
+//   return (
+//     <svg
+//       onClick={props.onClick}
+//       className={`arrow ${
+//         props.left ? "arrow--left" : "arrow--right"
+//       } ${disabeld} h-20`}
+//       xmlns='http://www.w3.org/2000/svg'
+//       viewBox='0 0 24 24'
+//     >
+//       {props.left && (
+//         <path d='M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z' />
+//       )}
+//       {!props.left && (
+//         <path d='M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z' />
+//       )}
+//     </svg>
+//   );
+// }
 
 interface CarouselImageProps {
   imagePath: string;
@@ -200,6 +201,7 @@ function CasrouselImage({
         priority
         quality={100}
         loading='eager'
+        unoptimized
       />
     </div>
   );
