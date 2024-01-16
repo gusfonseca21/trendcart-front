@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
+import { colorToHex } from "./src/types";
 
 const config: Config = {
   content: [
@@ -9,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      backgroundColor: {
+        ...colorToHex,
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
