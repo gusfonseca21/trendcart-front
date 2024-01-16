@@ -1,4 +1,4 @@
-import { Color, Product } from "@/types";
+import { Color, Product, colorToHex } from "@/types";
 import React, { useEffect, useState } from "react";
 
 interface ColorSelectorProps {
@@ -23,6 +23,7 @@ export default function ColorSelector({
   if (!product?.colors) return null;
 
   const selectColorHandler = (color: Color, index: number) => {
+    if (product?.colors.length <= 1) return;
     setSelectedColor(color);
     const selectedImage = product?.images.map((image) => image)[index];
     if (selectedImage) {
@@ -43,7 +44,10 @@ export default function ColorSelector({
                   selectedColor === color ? "border-gray-400" : ""
                 }`}
               >
-                <div className={`bg-${color} rounded-full w-full h-full`} />
+                <div
+                  className={`rounded-full w-full h-full`}
+                  style={{ backgroundColor: colorToHex[color] }}
+                />
               </div>
             ))}
           </div>

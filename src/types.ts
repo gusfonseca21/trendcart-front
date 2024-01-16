@@ -20,12 +20,12 @@ export const colorToHex: Record<Color, string> = {
   Preto: "#000000",
   Bege: "#F5F5DC",
   Marrom: "#A52A2A",
-  Cinza: "#808080",
+  Cinza: "#c0c0c0",
   Branco: "#FFFFFF",
-  Verde: "#008000",
-  Laranja: "#FFA500",
-  Azul: "#0000FF",
-  Amarelo: "#FFFF00",
+  Verde: "#04ad92",
+  Laranja: "#dd9815",
+  Azul: "#1f72be",
+  Amarelo: "#edb807",
 };
 
 type Review = {

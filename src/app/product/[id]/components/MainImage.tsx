@@ -18,14 +18,11 @@ export default function MainImage({
 }: MainImageProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  console.log("isHovered", isHovered);
-
   const handleChangeImage = (direction: "left" | "right") => {
     let currentImageIndex: number | undefined;
     images?.forEach((image, index) => {
       if (image === imageShowing) currentImageIndex = index;
     });
-    console.log("currentImageIndex", currentImageIndex);
     if (!images || currentImageIndex === undefined) return;
     if (direction === "left") {
       if (currentImageIndex === 0) selectImage(images[images.length - 1]);

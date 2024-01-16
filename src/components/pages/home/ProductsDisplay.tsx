@@ -1,7 +1,7 @@
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { Product, colorToHex } from "@/types";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import React, { useState } from "react";
 
 interface ProductsDisplayProps {
@@ -63,14 +63,12 @@ function Product({ productData }: ProductProps) {
   const [isImageHovered, setIsImageHovered] = useState(false);
   const [isSubTextHovered, setIsSubTextHovered] = useState(false);
 
-  const router = useRouter();
-
   const colors = productData.colors.map((color) => colorToHex[color]);
 
   return (
-    <div
+    <Link
       className='w-[270px] h-[400px] flex flex-col'
-      onClick={() => router.push(`/product/${productData._id}`)}
+      href={`/product/${productData._id}`}
     >
       <div
         className='w-full h-[340px] relative hover:cursor-pointer'
@@ -147,6 +145,6 @@ function Product({ productData }: ProductProps) {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

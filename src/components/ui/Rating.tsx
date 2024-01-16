@@ -15,16 +15,28 @@ export default function Rating({ avg }: RatingProps) {
     else return Math.floor(avg);
   };
 
-  const star = (
-    <Image alt='Ícone de estrela' src={starIcon} width={ICON_WIDTH} />
+  const star = (indexKey: number) => (
+    <Image
+      alt='Ícone de estrela'
+      src={starIcon}
+      width={ICON_WIDTH}
+      key={indexKey}
+    />
   );
-  const dot = <Image alt='Ícone de estrela' src={dotIcon} width={ICON_WIDTH} />;
+  const dot = (indexKey: number) => (
+    <Image
+      alt='Ícone de estrela'
+      src={dotIcon}
+      width={ICON_WIDTH}
+      key={indexKey}
+    />
+  );
 
   const avgElement = () => {
     const elements = [];
     for (let i = 0; i < 5; ++i) {
-      if (i + 1 <= floorAvg(avg)) elements.push(star);
-      else elements.push(dot);
+      if (i + 1 <= floorAvg(avg)) elements.push(star(i));
+      else elements.push(dot(i));
     }
     return elements;
   };
