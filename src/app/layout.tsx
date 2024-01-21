@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Navbar from "../components/Navbar";
 import lockScroll from "@/helpers/lockScroll";
 import SignInModal from "@/components/auth-modal";
 import "react-toastify/dist/ReactToastify.css";
 import Toast from "@/components/ui/Toast";
+import { UserContextProvider } from "@/context/UserContext";
+import Navbar from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,10 +62,12 @@ export default function RootLayout({
         <meta name='theme-color' content='#ffffff'></meta>
       </head>
       <body className={`${inter.className} h-full w-full`}>
-        <Toast />
-        <SignInModal openSignIn={openSignIn} setOpenSignIn={setOpenSignIn} />
-        <Navbar setOpenSignIn={setOpenSignIn} />
-        <main className={`top-0 relative h-full`}>{children}</main>
+        <UserContextProvider>
+          <Toast />
+          <SignInModal openSignIn={openSignIn} setOpenSignIn={setOpenSignIn} />
+          <Navbar setOpenSignIn={setOpenSignIn} />
+          <main className={`top-0 relative h-full`}>{children}</main>
+        </UserContextProvider>
       </body>
     </html>
   );

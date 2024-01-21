@@ -6,6 +6,7 @@ import Image from "next/image";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { HeroProduct } from "@/types";
 import Arrow from "@/components/ui/Arrow";
+import Link from "next/link";
 
 interface HeroCaouselProps {
   heroProducts: HeroProduct[];
@@ -54,11 +55,9 @@ export default function HeroCarousel({ heroProducts }: HeroCaouselProps) {
           <div ref={sliderRef} className='keen-slider'>
             {heroProducts.map((product, index) => {
               return (
-                <CasrouselImage
+                <CarouselImage
+                  product={product}
                   key={product._id}
-                  title={product.hero.title}
-                  imagePath={product.hero.image}
-                  category={product.category}
                   isActive={index === instanceRef.current?.track.details.rel}
                 />
               );
@@ -114,18 +113,11 @@ export default function HeroCarousel({ heroProducts }: HeroCaouselProps) {
 }
 
 interface CarouselImageProps {
-  imagePath: string;
+  product: HeroProduct;
   isActive: boolean;
-  title: string;
-  category: string;
 }
 
-function CasrouselImage({
-  imagePath,
-  isActive,
-  title,
-  category,
-}: CarouselImageProps) {
+function CarouselImage({ product, isActive }: CarouselImageProps) {
   const [showContent, setShowContent] = useState(isActive);
 
   useEffect(() => {
@@ -153,26 +145,28 @@ function CasrouselImage({
       >
         <h2
           className={`text-3xl font-normal m-0 ${
-            imagePath === "slider-pendant-lighting"
+            product.hero?.image === "slider-pendant-lighting"
               ? "text-zinc-50"
               : "text-zinc-700"
           }`}
         >
-          {title}
+          {product.hero?.title}
         </h2>
-        <span
+        <Link
+          href={`/product/${product._id}`}
           className={`text-xl font-normal text-light pb-1 w-fit cursor-pointer hover:text-main  ease-in-out duration-200 border-b border-[#888] ${
-            imagePath === "slider-pendant-lighting" && "text-gray-400 "
+            product.hero?.image === "slider-pendant-lighting" &&
+            "text-gray-400 "
           }`}
         >
-          {category}
-        </span>
+          {product.category}
+        </Link>
       </div>
       <Image
-        src={`/products/${imagePath}.jpg`}
+        src={`/products/${product.hero?.image}.jpg`}
         className='object-cover w-full'
         fill
-        alt={imagePath}
+        alt={product._id}
         priority
         quality={100}
         loading='eager'

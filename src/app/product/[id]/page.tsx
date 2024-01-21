@@ -16,7 +16,7 @@ type PageParams = {
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export default function Page({ params }: PageParams) {
+export default function ProductPage({ params }: PageParams) {
   const [product, setProduct] = useState<Product | undefined>();
   const [imageShowing, setSelectedImage] = useState<string | undefined>();
 

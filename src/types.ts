@@ -1,3 +1,9 @@
+export type User = {
+  name: string;
+  email: string;
+  photo: null | string;
+};
+
 export type FilterOptType =
   | "Todos"
   | "Bolsas e Mochilas"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Backdrop from "./Backdrop";
 import CloseWindow from "../ui/CloseWindow";
 import Header from "./Header";
@@ -7,6 +7,7 @@ import Input from "./Input";
 import LoadingSpinner from "../ui/LoadingSpinner";
 import Separator from "./Separator";
 import { toast } from "react-toastify";
+import { UserContext } from "@/context/UserContext";
 
 interface Props {
   openSignIn: boolean;
@@ -20,12 +21,16 @@ const clickBtnAnimation = "animate-button-click";
 
 export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   const [authMode, setAuthMode] = useState<AuthMode>("signIn");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [contentTransition, setContentTransition] = useState("");
   const [reqBtnAnimation, setReqBtnAnimation] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const userContext = useContext(UserContext);
 
   const authModeBtnRef = useRef<HTMLButtonElement | null>(null);
 
@@ -39,6 +44,10 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
     setAuthMode("signIn");
   }
 
+  function changeNameHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    setName(e.target.value);
+  }
+
   function changeEmailHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setErrorMessage("");
     setEmail(e.target.value);
@@ -47,6 +56,13 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   function changePasswordHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setErrorMessage("");
     setPassword(e.target.value);
+  }
+
+  function changePasswordConfirmHandler(
+    e: React.ChangeEvent<HTMLInputElement>
+  ) {
+    setErrorMessage("");
+    setPasswordConfirm(e.target.value);
   }
 
   function changeAuthMode() {
@@ -78,19 +94,28 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
     try {
       if (authMode === "signIn") {
         const result = await request("/login");
-        if (result.status === 200) {
+        if (result?.status === 200) {
+          userContext.updateLoggedUser(result.data.user);
           closeModalHandler();
           toast("Login feito com sucesso");
         }
       }
 
       if (authMode === "register") {
+        if (password !== passwordConfirm) {
+          setErrorMessage("As senhas devem ser iguais");
+          setLoading(false);
+          return;
+        }
         const result = await request("/signup");
-        if (result.status === 201) {
+
+        if (result?.status === 201) {
+          userContext.updateLoggedUser(result.data.user);
           closeModalHandler();
-          toast("Registro feito com sucesso");
+          toast("Conta criada com sucesso");
         }
       }
+
       setLoading(false);
     } catch (err: any) {
       setErrorMessage(`Erro: ${err.response.data.message}`);
@@ -99,10 +124,20 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   }
 
   const request = async (service: string) => {
-    return await axios.post(authServiceUrl + service, {
-      email,
-      password,
-    });
+    if (service === "/signup") {
+      return await axios.post(authServiceUrl + service, {
+        name,
+        email,
+        password,
+        passwordConfirm,
+      });
+    }
+    if (service === "/login") {
+      return await axios.post(authServiceUrl + service, {
+        email,
+        password,
+      });
+    }
   };
 
   return (
@@ -115,10 +150,19 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
         <CloseWindow closeFunction={closeModalHandler} />
         <form
           onSubmit={(e) => sendRequestHandler(e)}
-          className={`flex flex-col w-full gap-7 ${contentTransition}`}
+          className={`flex flex-col w-full gap-0 ${contentTransition}`}
         >
           <Header authMode={authMode} errorMessage={errorMessage} />
-          <div className='flex flex-col gap-2 text-sm'>
+          <div className='flex flex-col gap-3 pb-5 text-sm'>
+            {authMode === "register" ? (
+              <Input
+                title='Nome*'
+                value={name}
+                type='name'
+                minLength={4}
+                changeFunc={changeNameHandler}
+              />
+            ) : null}
             <Input
               title='Endereço de email *'
               value={email}
@@ -132,6 +176,15 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
               changeFunc={changePasswordHandler}
               minLength={4}
             />
+            {authMode === "register" ? (
+              <Input
+                title='Confirmação de Senha *'
+                value={passwordConfirm}
+                type='password'
+                changeFunc={changePasswordConfirmHandler}
+                minLength={4}
+              />
+            ) : null}
           </div>
           <div className='flex flex-col gap-5 justify-center'>
             <button

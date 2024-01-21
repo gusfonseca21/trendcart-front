@@ -7,7 +7,7 @@ import ProductsDisplay from "@/components/pages/home/ProductsDisplay";
 import HeroCarousel from "@/components/pages/home/HeroCarousel";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { HeroProduct } from "@/types";
-import { NAVBAR_HEIGHT } from "@/components/Navbar";
+import { NAVBAR_HEIGHT } from "@/components/navbar";
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
