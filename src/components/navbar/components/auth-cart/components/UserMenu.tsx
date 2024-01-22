@@ -1,6 +1,9 @@
 import { UserContext } from "@/context/UserContext";
 import { User } from "@/types";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import React, { useContext, useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 
 interface UserMenuProps {
   loggedUser: User;
@@ -19,6 +22,9 @@ export default function UserMenu({
   const { updateLoggedUser } = useContext(UserContext);
 
   const menuRef = useRef<HTMLUListElement | null>(null);
+
+  const router = useRouter();
+  const path = usePathname();
 
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
@@ -42,6 +48,8 @@ export default function UserMenu({
   const logoutUser = () => {
     updateLoggedUser(null);
     closeMenu();
+    if (path.startsWith("/user/")) router.replace("/");
+    toast("O usuário saiu com sucesso");
   };
 
   return (
@@ -49,7 +57,13 @@ export default function UserMenu({
       className={`w-40 absolute bg-white top-full right-0 flex flex-col border border-[bg-Cinza]`}
       ref={menuRef}
     >
-      <li className={`${optionStyle}  `}>{loggedUser.name}</li>
+      <Link
+        href={`/user/${loggedUser.id}`}
+        onClick={closeMenu}
+        className={`${optionStyle} border border-t-0 border-x-0 border-b-[bg-Cinza] w-40 h-10 truncate`}
+      >
+        {loggedUser.name}
+      </Link>
       <li
         className={`${optionStyle} font-normal text-red-500`}
         onClick={logoutUser}

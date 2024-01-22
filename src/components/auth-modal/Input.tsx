@@ -4,7 +4,7 @@ interface Props {
   type: "email" | "password" | "name";
   value: string;
   // eslint-disable-next-line no-unused-vars
-  changeFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  changeFunc?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   title: string;
   minLength?: number;
 }

@@ -14,7 +14,7 @@ interface Props {
   setOpenSignIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export type AuthMode = "signIn" | "register";
+export type AuthMode = "signIn" | "register" | "forgot";
 
 const changeAuthAnimation = "animate-fade-in-out";
 const clickBtnAnimation = "animate-button-click";
@@ -37,8 +37,10 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
   const authServiceUrl = process.env.NEXT_PUBLIC_BACKEND_URL + "/users";
 
   function closeModalHandler() {
+    setName("");
     setEmail("");
     setPassword("");
+    setPasswordConfirm("");
     setErrorMessage("");
     setOpenSignIn(false);
     setAuthMode("signIn");
@@ -65,16 +67,20 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
     setPasswordConfirm(e.target.value);
   }
 
-  function changeAuthMode() {
+  function changeAuthMode(mode?: AuthMode) {
     const btn = authModeBtnRef.current;
     if (btn) {
       btn.disabled = true;
     }
     setContentTransition(changeAuthAnimation);
     setTimeout(() => {
-      setAuthMode((prevState) =>
-        prevState === "signIn" ? "register" : "signIn"
-      );
+      if (!mode) {
+        setAuthMode((prevState) =>
+          prevState === "signIn" ? "register" : "signIn"
+        );
+      } else {
+        setAuthMode(mode);
+      }
       setErrorMessage("");
     }, 250);
 
@@ -116,6 +122,22 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
         }
       }
 
+      if (authMode === "forgot") {
+        const result = await request("/forgot-password");
+
+        if (result?.status === 200) {
+          toast(
+            "O link para alteração de senha foi enviado ao seu email. Verifique a caixa de SPAM",
+            { autoClose: 5000 }
+          );
+        } else {
+          toast.error(
+            "Houve um erro durante a requisição. Cheque o e-mail ou tente novamente mais tarde",
+            { autoClose: 5000 }
+          );
+        }
+      }
+
       setLoading(false);
     } catch (err: any) {
       setErrorMessage(`Erro: ${err.response.data.message}`);
@@ -132,10 +154,17 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
         passwordConfirm,
       });
     }
+
     if (service === "/login") {
       return await axios.post(authServiceUrl + service, {
         email,
         password,
+      });
+    }
+
+    if (service === "/forgot-password") {
+      return await axios.post(authServiceUrl + service, {
+        email,
       });
     }
   };
@@ -169,13 +198,24 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
               type='email'
               changeFunc={changeEmailHandler}
             />
-            <Input
-              title='Senha *'
-              value={password}
-              type='password'
-              changeFunc={changePasswordHandler}
-              minLength={4}
-            />
+            {authMode !== "forgot" ? (
+              <Input
+                title='Senha *'
+                value={password}
+                type='password'
+                changeFunc={changePasswordHandler}
+                minLength={4}
+              />
+            ) : null}
+
+            {authMode === "signIn" ? (
+              <span
+                className='cursor-pointer hover:underline max-w-max-content'
+                onClick={() => changeAuthMode("forgot")}
+              >
+                Esqueci minha senha
+              </span>
+            ) : null}
             {authMode === "register" ? (
               <Input
                 title='Confirmação de Senha *'
@@ -193,17 +233,26 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
               className={`input bg-black text-white transition-black-opacity ${reqBtnAnimation} flex items-center justify-center h-12`}
               onAnimationEnd={() => setReqBtnAnimation("")}
             >
-              {!loading && (authMode === "signIn" ? "Entrar" : "Registrar")}
+              {!loading &&
+                (authMode !== "forgot"
+                  ? authMode === "signIn"
+                    ? "Entrar"
+                    : "Registrar"
+                  : "Enviar")}
               {loading && <LoadingSpinner width={20} height={20} />}
             </button>
             <Separator />
             <button
-              onClick={changeAuthMode}
+              onClick={() => changeAuthMode()}
               type='button'
               className='input bg-white text-black hover:border-black active:animate-button-click h-12'
               ref={authModeBtnRef}
             >
-              {authMode === "signIn" ? "Criar uma conta" : "Entrar"}
+              {authMode !== "forgot"
+                ? "signIn"
+                  ? "Criar uma conta"
+                  : "Entrar"
+                : "Voltar"}
             </button>
           </div>
         </form>

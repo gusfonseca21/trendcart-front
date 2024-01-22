@@ -8,15 +8,15 @@ import ImageSelector from "./components/ImageSelector";
 import MainImage from "./components/MainImage";
 import Info from "./components/Info";
 
-type PageParams = {
+interface ProductPageProps {
   params: {
     id: string;
   };
-};
+}
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export default function ProductPage({ params }: PageParams) {
+export default function ProductPage({ params }: ProductPageProps) {
   const [product, setProduct] = useState<Product | undefined>();
   const [imageShowing, setSelectedImage] = useState<string | undefined>();
 
