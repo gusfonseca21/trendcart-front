@@ -130,6 +130,7 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
             "O link para alteração de senha foi enviado ao seu email. Verifique a caixa de SPAM",
             { autoClose: 5000 }
           );
+          closeModalHandler();
         } else {
           toast.error(
             "Houve um erro durante a requisição. Cheque o e-mail ou tente novamente mais tarde",
