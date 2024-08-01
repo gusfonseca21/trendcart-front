@@ -209,14 +209,14 @@ export default function SignInModal({ openSignIn, setOpenSignIn }: Props) {
               />
             ) : null}
 
-            {authMode === "signIn" ? (
+            {/* {authMode === "signIn" ? (
               <span
                 className='cursor-pointer hover:underline max-w-max-content'
                 onClick={() => changeAuthMode("forgot")}
               >
                 Esqueci minha senha
               </span>
-            ) : null}
+            ) : null} */}
             {authMode === "register" ? (
               <Input
                 title='Confirmação de Senha *'

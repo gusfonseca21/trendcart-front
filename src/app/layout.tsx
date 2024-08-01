@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import "./globals.css";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import lockScroll from "@/helpers/lockScroll";
 import SignInModal from "@/components/auth-modal";
@@ -10,13 +9,14 @@ import "react-toastify/dist/ReactToastify.css";
 import Toast from "@/components/ui/Toast";
 import { UserContextProvider } from "@/context/UserContext";
 import Navbar from "@/components/navbar";
+// import type { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "TrendCart",
-  description: "O verdadeiro Design Inteligente",
-};
+// export const metadata: Metadata = {
+//   title: "TrendCart",
+//   description: "O verdadeiro Design Inteligente",
+// };
 
 export default function RootLayout({
   children,
@@ -32,7 +32,7 @@ export default function RootLayout({
   }, [openSignIn]);
 
   return (
-    <html className='flex justify-center h-full' lang='en'>
+    <html className='flex justify-center h-full' lang='pt-BR'>
       <head>
         <title>{title ? title : "TrendCart"}</title>
         <link

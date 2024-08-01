@@ -41,7 +41,7 @@ export default function MainImage({
         return (
           <div
             key={image}
-            className='relative'
+            className='relative w-full'
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -57,7 +57,7 @@ export default function MainImage({
             <Image
               src={`/products/${imageShowing}.jpg`}
               alt={image}
-              className={`w-full`}
+              className={`w-full object-cover`}
               sizes='auto'
               width={1}
               height={1}
