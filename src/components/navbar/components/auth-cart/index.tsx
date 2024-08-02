@@ -33,15 +33,15 @@ export default function AuthCart({
     <div>
       <ul className={`${linkListStyle} !justify-end`}>
         {loggedUser ? (
-          <div className='relative'>
+          <div className="relative">
             <div
-              className='h-12 w-12 rounded-full overflow-hidden cursor-pointer'
+              className="h-12 w-12 rounded-full overflow-hidden cursor-pointer"
               onClick={openMenu}
               ref={avatarRef}
             >
               <Image
                 src={loggedUser.photo ?? defaultAvatar}
-                alt='nome'
+                alt="nome"
                 height={50}
                 width={50}
               />
@@ -62,7 +62,7 @@ export default function AuthCart({
             Entrar
           </span>
         )}
-        <a className={hoverText}>Carrinho</a>
+        {/* <a className={hoverText}>Carrinho</a> */}
       </ul>
     </div>
   );
